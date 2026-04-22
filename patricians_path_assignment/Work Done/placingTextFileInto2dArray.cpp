@@ -22,6 +22,11 @@ void breadthFirstSearch(pair<int, int>start, vector<vector<char>>& matrix) { //t
     vector<vector<bool>> visitedNodes (rows, vector<bool>(cols,false)); //checks visited nodes
     queue<pair<int, int>> output; //this will create queue to current pair (coordinate of the maze
 
+    if (start.first < 0 || start.first >= rows || start.second < 0 || start.second >= cols || matrix[start.first][start.second] != 'X') {
+        cout << "Valid starting point" << endl;
+        return;
+    }
+
 
     visitedNodes[start.first][start.second] = true;
     output.push(start);//push starting value into cpp
@@ -34,22 +39,24 @@ void breadthFirstSearch(pair<int, int>start, vector<vector<char>>& matrix) { //t
         for (int i=0; i<4; i++){
             int rowTransversal=currentNode.first + dr[i]; //add one to current row
             int columnTransversal=currentNode.second+ dc[i]; //add one to current column
-            pair<int, int> newCoordinate = {rowTransversal, columnTransversal};
 
-            if (matrix[rowTransversal][columnTransversal]!='X' && !visitedNodes[rowTransversal][columnTransversal]) {//checks if there is a wall
-                visitedNodes[currentNode.first][currentNode.second]=true;
+            if (rowTransversal<0 || columnTransversal<0) {
+                continue;
+            }
+            else if(rowTransversal>=rows || columnTransversal>=cols) {//check if the movement surpases the amount of rows in the maze matrix
+                continue;
+            }
+            else if (matrix[rowTransversal][columnTransversal]!='X' && !visitedNodes[rowTransversal][columnTransversal]) {//checks if there is a wall
+                visitedNodes[rowTransversal][columnTransversal]=true;
                 output.push({rowTransversal, columnTransversal});
             }
-            /*else if(rowTransversal>0 && columnTransversal>0 && rowTransversal<rows && columnTransversal<cols) {//check if the movement surpases the amount of rows in the maze matrix
-                continue;
-            }*/
 
         }//Have to establish start area
 
         // Go through all neighbors
         /*for (int neighbor : matrix[currentNode]) { //need to change the currentNode to similar type as the matrix
             if (!visitedNodes[neighbor]) {
-                visitedNodes[neighbor] = true;
+                visitzzedNodes[neighbor] = true;
                 output.push(neighbor);
             }
         }*/
@@ -60,7 +67,6 @@ void breadthFirstSearch(pair<int, int>start, vector<vector<char>>& matrix) { //t
 
 void putInFile(string mazeInput, vector<vector<char>>&matrix) {
     string line;
-
     ifstream myFile(mazeInput); //select the file
 
     if (mazeInput!="maze.txt" && mazeInput!="maze2.txt") {
@@ -114,7 +120,7 @@ int main() {
         cout<<endl;
     } //this code checks if the maze is actually printed; nothing is actuall in the mazeMatrix*/
 
-    pair<int, int> startingPoint = {3,2};
+    pair<int, int> startingPoint = {2,0};
     breadthFirstSearch(startingPoint, mazeMatrix);
     //use bredth-first since we are starting at 1,1
 
