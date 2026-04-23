@@ -10,10 +10,19 @@
 using namespace std;
 
 
-void breadthFirstSearch(pair<int, int>start, vector<vector<char>>& matrix) { //the ampersnand will use the maze already printed
+void breadthFirstSearch(/*pair<int, int>start,*/ vector<vector<char>>& matrix) { //the ampersnand will use the maze already printed
 
     int rows=matrix.size();
     int cols=matrix[0].size();
+
+
+    /*int rows= 12;
+    int cols=22;
+
+    pair <int, int> start{3, 2};*/
+
+
+
 
     int dr[] = {-1, 1, 0, 0};
     int dc[] = {0, 0, -1, 1}; //allows us to access neighboring cells from current node
@@ -91,10 +100,11 @@ void putInFile(string mazeInput, vector<vector<char>>&matrix) {
     } //This nested for loop outputs each character of the row
 
 }
-
 int main() {
     //int nodeAmount=37;//we will have to insert later once path is discovered
     //vector<vector<char>>path(nodeAmount);//establishes the amount of nodes in cpp;
+
+
 
     vector<vector<char>> mazeMatrix; //create a empth 2-d vector for outputting map
     putInFile("maze.txt", mazeMatrix);//you input the maze and mazeMatrix into function
