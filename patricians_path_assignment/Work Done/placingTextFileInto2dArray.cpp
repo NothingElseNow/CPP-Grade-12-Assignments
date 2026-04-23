@@ -10,18 +10,13 @@
 using namespace std;
 
 
-void breadthFirstSearch(/*pair<int, int>start,*/ vector<vector<char>>& matrix) { //the ampersnand will use the maze already printed
+void breadthFirstSearch(pair<int, int>start, vector<vector<char>>& matrix) { //the ampersnand will use the maze already printed
 
-    int rows=matrix.size();
-    int cols=matrix[0].size();
+    int rows = 13;//define amount of rows
+    int cols = 23;//define amount of columns
 
-
-    /*int rows= 12;
-    int cols=22;
-
-    pair <int, int> start{3, 2};*/
-
-
+   // int rows=matrix.size();
+   // int cols=matrix[0].size();
 
 
     int dr[] = {-1, 1, 0, 0};
@@ -31,19 +26,20 @@ void breadthFirstSearch(/*pair<int, int>start,*/ vector<vector<char>>& matrix) {
     vector<vector<bool>> visitedNodes (rows, vector<bool>(cols,false)); //checks visited nodes
     queue<pair<int, int>> output; //this will create queue to current pair (coordinate of the maze
 
-    if (start.first < 0 || start.first >= rows || start.second < 0 || start.second >= cols || matrix[start.first][start.second] != 'X') {
-        cout << "Valid starting point" << endl;
+    if (start.first < 0 || start.first >= rows || start.second < 0 || start.second >= cols || matrix[start.first][start.second] == 'X') { //checks if starting coordinate can navigate the maze (starts on barrier, more than columns/rows or below zero)
+        cout << "Not Valid Starting Point" << endl;
         return;
     }
-
 
     visitedNodes[start.first][start.second] = true;
     output.push(start);//push starting value into cpp
 
-    while (!output.empty()) {
+    //we cannot have this on the inside because it will run infinitely
+
+    while (!output.empty()) {//checks if the available stored coordinates
         pair<int, int>currentNode = output.front();//accesses variable at start of the quque (which is now the starting pair)
         output.pop(); //revmoves the top queue
-        cout << currentNode.first <<","<< currentNode.second<<endl; // process current node
+        cout << currentNode.first <<","<< currentNode.second<<endl; // outputs the current coordinate
 
         for (int i=0; i<4; i++){
             int rowTransversal=currentNode.first + dr[i]; //add one to current row
@@ -55,7 +51,7 @@ void breadthFirstSearch(/*pair<int, int>start,*/ vector<vector<char>>& matrix) {
             else if(rowTransversal>=rows || columnTransversal>=cols) {//check if the movement surpases the amount of rows in the maze matrix
                 continue;
             }
-            else if (matrix[rowTransversal][columnTransversal]!='X' && !visitedNodes[rowTransversal][columnTransversal]) {//checks if there is a wall
+            else if (matrix[rowTransversal][columnTransversal]!='X' && !visitedNodes[rowTransversal][columnTransversal]) {//sees if there is not arrow or if point is not visited
                 visitedNodes[rowTransversal][columnTransversal]=true;
                 output.push({rowTransversal, columnTransversal});
             }
@@ -87,25 +83,20 @@ void putInFile(string mazeInput, vector<vector<char>>&matrix) {
         for (char c : line) {
             row.push_back(c); // Add each character to the row
         }
-        matrix.push_back(row); //add the row vector into matrix=
+        matrix.push_back(row); //add the row vector into matrix
     }
 
     myFile.close();
 
     for (int i = 0; i < matrix.size(); i++){
         for (int j = 0; j < matrix[i].size(); j++){
-            cout << matrix[i][j] << " ";
+            cout << matrix[i][j] << " "; //prints out each coordinate of the matrix
         }
         cout << endl;
     } //This nested for loop outputs each character of the row
 
 }
 int main() {
-    //int nodeAmount=37;//we will have to insert later once path is discovered
-    //vector<vector<char>>path(nodeAmount);//establishes the amount of nodes in cpp;
-
-
-
     vector<vector<char>> mazeMatrix; //create a empth 2-d vector for outputting map
     putInFile("maze.txt", mazeMatrix);//you input the maze and mazeMatrix into function
 
@@ -130,50 +121,11 @@ int main() {
         cout<<endl;
     } //this code checks if the maze is actually printed; nothing is actuall in the mazeMatrix*/
 
-    pair<int, int> startingPoint = {2,0};
+    pair<int, int> startingPoint = {3,2};
     breadthFirstSearch(startingPoint, mazeMatrix);
-    //use bredth-first since we are starting at 1,1
-
-
 }
 
 
-    /*path[0] = {3, 2};
-    path[1] = {3, 4};
-    path[2] = {3, 5};
-    path[3] = {3, 6;
-    path[4] = {3, 7};
-    path[5] = {3, 8};
-    path[6] = {3, 9};
-    path[7] = {3, 10};
-    path[8] = {3, 11};
-    path[9] = {3, 12};
-    path[10] = {3, 13};
-    path[11] = {3, 14};
-    path[12] = {4, 14};
-    path[13] = {5, 14};
-    path[14] = {6, 14};
-    path[15] = {7, 14};
-    path[16] = {8, 14};
-    path[17] = {8, 13};
-    path[18] = {8, 12};
-    path[19] = {8, 11};
-    path[21] = {8, 10};
-    path[22] = {8, 9};
-    path[23] = {8, 8};
-    path[24] = {9, 8};
-    path[25] = {10, 8};
-    path[26] = {11, 8};
-    path[27] = {11, 9};
-    path[28] = {11, 10};
-    path[29] = {11, 11};
-    path[30] = {11, 12};
-    path[31] = {11, 13};
-    path[32] = {11, 14};
-    path[33] = {12, 15};
-    path[34] = {12, 16};
-    path[35] = {12, 17};
-    path[36] = {12, 18};*/
 
 
 
